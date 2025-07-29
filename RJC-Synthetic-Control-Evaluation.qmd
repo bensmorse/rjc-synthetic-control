@@ -1,9 +1,7 @@
 ---
 title: "Synthetic Control Evaluation of the RJC Pilot Project"
-format: 
-  html:
-    toc: true
-    css: styles.css
+format: html
+editor: source
 ---
 
 ## Background on RJC
