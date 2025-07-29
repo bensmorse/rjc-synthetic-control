@@ -16,4 +16,6 @@ format:
       - cosmo
       - brand
     css: styles.css
+    smooth-scroll: true
     toc: true
+    
