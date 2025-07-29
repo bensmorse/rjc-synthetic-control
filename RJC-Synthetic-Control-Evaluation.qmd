@@ -3,7 +3,7 @@ title: "Synthetic Control Evaluation of the RJC Pilot Project"
 format: 
   html:
     toc: true
-    css: style.css
+    css: styles.css
 ---
 
 ## Background on RJC
@@ -68,6 +68,8 @@ The data are organized by neighborhood and quarter-year, from Q1 2015 through 20
 # load & view data
 df <- read_csv("data\\MultnomahAnalysisByQtr.csv")
 df |> glimpse()
+  
+  
 
 ```
 :::
