@@ -1,0 +1,1 @@
+Demonstration of Synthetic Control evaluation method from recent evaluation of the [Reimaginging Justice in Cully (RJC)](https://multco.us/info/reimagining-justice-cully) pilot project. See [https://bensmorse.github.io/rjc-synthetic-control](https://bensmorse.github.io/rjc-synthetic-control/RJC-Synthetic-Control-Evaluation.html) for full demo.
