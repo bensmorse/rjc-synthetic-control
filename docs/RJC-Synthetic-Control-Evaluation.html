@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>index</title>
+<title>Synthetic Control Evaluation of the RJC Pilot Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -67,6 +101,14 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<link href="site_libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+
+<script src="site_libs/tabwid-1.1.3/tabwid.js"></script>
+
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 
 
 <link rel="stylesheet" href="styles.css">
@@ -85,7 +127,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./RJC-Synthetic-Control-Evaluation.html"> 
+    <a class="nav-link active" href="./RJC-Synthetic-Control-Evaluation.html" aria-current="page"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -103,19 +145,2741 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background-on-rjc" id="toc-background-on-rjc" class="nav-link active" data-scroll-target="#background-on-rjc">Background on RJC</a></li>
+  <li><a href="#overview-of-the-synthetic-control-method" id="toc-overview-of-the-synthetic-control-method" class="nav-link" data-scroll-target="#overview-of-the-synthetic-control-method">Overview of the Synthetic Control Method</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a>
+  <ul class="collapse">
+  <li><a href="#main-results" id="toc-main-results" class="nav-link" data-scroll-target="#main-results">Main Results</a></li>
+  <li><a href="#unit-weights" id="toc-unit-weights" class="nav-link" data-scroll-target="#unit-weights">Unit Weights</a></li>
+  <li><a href="#inference" id="toc-inference" class="nav-link" data-scroll-target="#inference">Inference</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Synthetic Control Evaluation of the RJC Pilot Project</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
 
 
-</main> <!-- /main -->
+<section id="background-on-rjc" class="level2">
+<h2 class="anchored" data-anchor-id="background-on-rjc">Background on RJC</h2>
+<p>In 2024, Multnomah County, Oregon, launched the <a href="https://multco.us/info/reimagining-justice-cully">Reimaginging Justice in Cully (RJC)</a> pilot project. Funded by federal Bureau of Justice Assistance, RJC sought to reduce low-level crimes and improve community safety by adopting community-driven approaches to crime reduction such as trust-building between police and residents, place-based public safety interventions, and diversion progarms for at-risk youth.</p>
+<p>Together with former colleagues from Social Impact, I conducted a synthetic control analysis of the impact of RJC on the four types of low-level crime targeted by the program – assault, motor vehicle theft, larceny, and vandalism. The analysis draws entirely on publicly available census data and neighborhood-level crime data accessible through <a href="https://public.tableau.com/app/profile/portlandpolicebureau/viz/New_Monthly_Neighborhood/MonthlyOffenseTotals">Portland’s Crime Statistics Dashboard</a>. This document provides a summary of the evaluation as well as an applied demonstration of the synthetic control methodology.</p>
+</section>
+<section id="overview-of-the-synthetic-control-method" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-the-synthetic-control-method">Overview of the Synthetic Control Method</h2>
+<p>The SC method is an increasing popular evaluation method that is well-suited for evaluating programs that take place at an aggregate level and affect a just small number of aggregate entities.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The essence of the SC method is to create a “synthetic” version of the treated unit by weighting non-treated units such that the compound, synthetic control unit closely mimics the treated unit prior to the start of the intervention. Applied to the RJC evaluation, the SC method compares low-level crime rates in Cully to low-level crime rates in synthetic Cully, where synthetic Cully is constructed as a weighted combination of other Portland neighborhoods.</p>
+<p>In spirit, the synthetic control method is very similar to the comparative case study method, which compares outcomes in a given intervention unit (e.g., Cully) to outcomes in units not affected by the intervention (e.g., other Portland neighborhoods). However, whereas comparative case studies often use informal justifications for the choice of comparison units, the synthetic control method uses a data-driven, algorithmic procedure to identify and weight comparison units so that the synthetic unit is as similar as possible to the intervention unit in terms of key socio-demographic predictors and pre-intervention crime rates.</p>
+<p><a href="#fig-trends" class="quarto-xref">Figure&nbsp;1</a> displays the intuition behind the method graphically. The solid line indicates the total number of low-level crimes reported in Cully for each quarter since 2015; the dashed line indicates the total number of low-level crimes in synthetic Cully. The two lines map closely to one another in both the pre and post intervention periods, suggesting the RJC pilot project did not have a significant impact on low-level crime in Cully.</p>
+<!--- As generated by the SC algorithm, synthetic Cully is a weighted combination of Glenfair, Overlook, Powellhurst-Gilbert, Parkrose, and three other neighborhoods in Portland (@fig-unit-weights). --->
+</section>
+<section id="implementation" class="level2">
+<h2 class="anchored" data-anchor-id="implementation">Implementation</h2>
+<p>The data are organized by neighborhood and quarter-year, from Q1 2015 through 2025 Q2. Our outcome of interest is <em>OffenseCount</em>, which captures the total number of low-level offenses (assault, motor vehicle theft, larceny, and vandalism) in a given neighborhood for a given quarter-year.</p>
+<div class="scrolling-output">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># insheet rawdata &amp; clean</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># source("01_Insheet&amp;Clean.R")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load &amp; view data</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data</span><span class="sc">\\</span><span class="st">MultnomahAnalysisByQtr.csv"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 3,990
+Columns: 42
+$ Neighborhood         &lt;chr&gt; "Alameda", "Arbor Lodge", "Ardenwald", "Argay", "…
+$ quarter              &lt;chr&gt; "2015 Q1", "2015 Q1", "2015 Q1", "2015 Q1", "2015…
+$ year                 &lt;dbl&gt; 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2…
+$ time                 &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ NeighNum             &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16…
+$ OffenseCount         &lt;dbl&gt; 0, 4, 0, 4, 1, 0, 1, 0, 1, 1, 0, 0, 0, 3, 1, 5, 0…
+$ qtr_numeric          &lt;dbl&gt; 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2…
+$ level                &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4…
+$ pop_2010             &lt;dbl&gt; 5212, 6153, 4590, 5997, 710, 2909, 5780, 5369, 33…
+$ pop_2020             &lt;dbl&gt; 5455, 6946, 4706, 6285, 813, 3108, 4692, 6080, 46…
+$ age_under18_2010     &lt;dbl&gt; 1306, 1029, 973, 1394, 155, 728, 1203, 1156, 476,…
+$ age_under18_2020     &lt;dbl&gt; 1323, 1102, 836, 1156, 169, 665, 942, 1371, 580, …
+$ age_1864_2010        &lt;dbl&gt; 3353, 4563, 3069, 3567, 443, 1899, 4030, 3667, 26…
+$ age_1864_2020        &lt;dbl&gt; 3028, 5072, 3117, 3862, 491, 1810, 2985, 3680, 37…
+$ age_over65_2010      &lt;dbl&gt; 553, 561, 548, 1036, 112, 283, 547, 546, 218, 104…
+$ age_over65_2020      &lt;dbl&gt; 1104, 772, 753, 1268, 153, 633, 765, 1030, 300, 1…
+$ median_age_2010      &lt;dbl&gt; 43.15100, 37.52636, 39.79046, 40.73328, 46.23028,…
+$ median_age_2020      &lt;dbl&gt; 45.00182, 39.35783, 41.55339, 42.86140, 44.86847,…
+$ area_sq_mile_2010    &lt;dbl&gt; 0.6136365, 0.8677970, 1.0625167, 2.0652340, 0.917…
+$ area_sq_mile_2020    &lt;dbl&gt; 0.6137378, 0.8679441, 1.0627149, 2.0655656, 0.917…
+$ pop_black_2010       &lt;dbl&gt; 174, 412, 133, 883, 16, 37, 249, 238, 880, 692, 5…
+$ pop_black_2020       &lt;dbl&gt; 159, 462, 128, 1077, 16, 56, 122, 188, 733, 759, …
+$ pop_white_2010       &lt;dbl&gt; 4894, 5194, 4277, 3736, 665, 2712, 5175, 4948, 22…
+$ pop_white_2020       &lt;dbl&gt; 5094, 5969, 4344, 4058, 735, 2854, 4231, 5623, 35…
+$ pop_hispanic_2010    &lt;dbl&gt; 174, 424, 263, 1036, 23, 82, 334, 159, 249, 1806,…
+$ pop_hispanic_2020    &lt;dbl&gt; 251, 602, 357, 899, 48, 165, 358, 330, 521, 1877,…
+$ rentburd_pct_2010    &lt;dbl&gt; 0.4768132, 0.3810594, 0.3231951, 0.5385615, 0.258…
+$ rentburd_pct_2020    &lt;dbl&gt; 0.3745387, 0.3881125, 0.5366595, 0.5306165, 0.451…
+$ home_owner_pct_2010  &lt;dbl&gt; 0.8567088, 0.7069328, 0.6301930, 0.5891163, 0.742…
+$ home_owner_pct_2020  &lt;dbl&gt; 0.8036031, 0.6629610, 0.6128259, 0.6109195, 0.823…
+$ turnout_2020         &lt;dbl&gt; 0.9702323, 0.8328200, 0.7701617, 0.6167625, 0.865…
+$ no_ged_2010          &lt;dbl&gt; 0.023355477, 0.101471663, 0.066431083, 0.11711052…
+$ no_ged_2020          &lt;dbl&gt; 0.01458674, 0.02877682, 0.05580868, 0.10434435, 0…
+$ BA_or_higher_2010    &lt;dbl&gt; 0.7075703, 0.4558446, 0.3019824, 0.3122737, 0.794…
+$ BA_or_higher_2020    &lt;dbl&gt; 0.7478001, 0.5924336, 0.4035739, 0.3561831, 0.838…
+$ tree_canopy_pct_2020 &lt;dbl&gt; 0.3063422, 0.1970050, 0.2956245, 0.1272738, 0.606…
+$ poverty_rate_2010    &lt;dbl&gt; 0.05316986, 0.18496928, 0.11307912, 0.23624906, 0…
+$ poverty_rate_2020    &lt;dbl&gt; 0.04674707, 0.08852497, 0.11865345, 0.13299799, 0…
+$ expDate              &lt;date&gt; 2024-02-09, 2024-02-09, 2024-02-09, 2024-02-09, …
+$ pct_white_2020       &lt;dbl&gt; 0.9338222, 0.8593435, 0.9230769, 0.6456643, 0.904…
+$ pct_black_2020       &lt;dbl&gt; 0.02914757, 0.06651310, 0.02719932, 0.17136038, 0…
+$ pct_hispanic_2020    &lt;dbl&gt; 0.04601283, 0.08666859, 0.07586060, 0.14303898, 0…</code></pre>
+</div>
+</div>
+</div>
+<p><br></p>
+<p>We implement the SC method via the <code>tidysynth</code> package; click the code-fold below for line-by-line annotation.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_out <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">synthetic_control</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome =</span> OffenseCount,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">unit =</span> Neighborhood,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> time, <span class="co"># quarters from Q1 2015</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">i_unit =</span> <span class="st">"Cully"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">i_time =</span> <span class="dv">37</span>, <span class="co"># quarter corresponding to 2024 Q1</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">generate_placebos =</span> <span class="cn">TRUE</span> <span class="co"># generate placebo synthetic controls for inference</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate aggregate predictors used to fit the weights</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Vars from 2020 census</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">pop_2020 =</span> pop_2020,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_age_2020 =</span> median_age_2020,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">rentburd_pct_2020 =</span> rentburd_pct_2020,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_white_2020 =</span> pct_white_2020,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_hispanic_2020 =</span> pct_hispanic_2020,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_black_2020 =</span> pct_black_2020,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">turnout_2020 =</span> turnout_2020,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">no_ged_2020 =</span> no_ged_2020,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">poverty_rate_2020 =</span> poverty_rate_2020</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># lagged crime rates</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">OffenseCount2015 =</span> <span class="fu">sum</span>(OffenseCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">OffenseCount2016 =</span> <span class="fu">sum</span>(OffenseCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> <span class="dv">9</span><span class="sc">:</span><span class="dv">12</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">OffenseCount2017 =</span> <span class="fu">sum</span>(OffenseCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> <span class="dv">13</span><span class="sc">:</span><span class="dv">16</span>,</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">OffenseCount2018 =</span> <span class="fu">sum</span>(OffenseCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> <span class="dv">17</span><span class="sc">:</span><span class="dv">20</span>,</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">OffenseCount2019 =</span> <span class="fu">sum</span>(OffenseCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> <span class="dv">21</span><span class="sc">:</span><span class="dv">24</span>,</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">OffenseCount2020 =</span> <span class="fu">sum</span>(OffenseCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> <span class="dv">25</span><span class="sc">:</span><span class="dv">28</span>,</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">OffenseCount2021 =</span> <span class="fu">sum</span>(OffenseCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> <span class="dv">29</span><span class="sc">:</span><span class="dv">32</span>,</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">OffenseCount2022 =</span> <span class="fu">sum</span>(OffenseCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_predictor</span>(</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> <span class="dv">33</span><span class="sc">:</span><span class="dv">36</span>,</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">OffenseCount2023 =</span> <span class="fu">sum</span>(OffenseCount, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate the fitted weights for the synthetic control</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_weights</span>(<span class="at">optimization_window =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">37</span>, <span class="co"># time to use in the optimization task</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>                   <span class="at">margin_ipop =</span> .<span class="dv">02</span>, </span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sigf_ipop =</span> <span class="dv">7</span>,</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>                   <span class="at">bound_ipop =</span> <span class="dv">6</span> <span class="co"># optimizer options</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate the synthetic control</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_control</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="main-results" class="level3">
+<h3 class="anchored" data-anchor-id="main-results">Main Results</h3>
+<p><a href="#fig-trends" class="quarto-xref">Figure&nbsp;1</a> plots low-level crime rates overtime in Cully and synthetic Cully. The figure shows that crime trends in syntheic Cully closely map those of actual Cully in the pre-intervention period,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and that this pattern continues in the post-intervention period. Indeed, the ratio of the synthetic Cully’s mean squared prediction error (MSPE) for the outcome variable between the pre vs.&nbsp;post intervention period is 1.05 (<a href="#tbl-inference" class="quarto-xref">Table&nbsp;2</a>), contrary to what we would expect if there were significant impacts that emerged in the post-intervention period.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Overall, the results provide little evidence to suggest the RJC program has had an impact on low-level crime.</p>
+<!-- We can see this more clearly by plotting the differences between Cully and Synthetic Cully overtime: --->
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_out <span class="sc">|&gt;</span> <span class="fu">plot_trends</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-trends" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="RJC-Synthetic-Control-Evaluation_files/figure-html/fig-trends-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Low-level Crime in Cully and Synthetic Cully, 2015 Q1-2025 Q2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="unit-weights" class="level3">
+<h3 class="anchored" data-anchor-id="unit-weights">Unit Weights</h3>
+<!-- As generated by the SC algorithm, synthetic Cully is a weighted combination of Glenfair, Overlook, Powellhurst-Gilbert, four other neighborhoods of Portland (@fig-unit-weights). To identify these weights, the SC procedure used an optimization algorithm that identifies the weighted combination of neighborhoods that best resembles Cully prior to the start of RJC in 2024 in terms of pre-intervention crime rates **and other covariates specified in the model**. -->
+<p>The SC procedure uses an optimization algorithm to identify the weighted combination of neighborhoods that best resembles Cully prior to the start of the intervention in terms of its crime rates and other predictors of crime specified in the model.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> By default, the optimization algorithm minimizes synthetic Cully’s mean squared prediction error across all pre-intervention periods, though <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/ajps.12116">Abadie, Diamond, and Hainmueller (2015)</a> propose a related method that uses cross-validation to minimize over-fitting.</p>
+<p>Applied here, the SC algorithm constructs synthetic Cully as a weighted combination of Glenfair, Overlook, Powellhurst-Gilbert, four other neighborhoods of Portland (<a href="#fig-unit-weights" class="quarto-xref">Figure&nbsp;2</a>).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_out <span class="sc">|&gt;</span> <span class="fu">plot_nonzero_unit_weights</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-unit-weights" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unit-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="RJC-Synthetic-Control-Evaluation_files/figure-html/fig-unit-weights-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unit-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Weights Used to Construct Synthetic Cully
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#tbl-balance" class="quarto-xref">Table&nbsp;1</a> shows that synthetic Cully is nearly identical to Cully in terms of its population, age distribution, percentage of residents below the poverty line, percentage without a GED, electoral turnout, racial composition, and pre-intervention crime counts from 2015 to 2023.</p>
+<!--
+In applying the synthetic control method, we considered predictors such as population, age distribution, percentage of residents below the poverty line, percentage without a GED, electoral turnout, racial composition (including percentages of Black, White, and Hispanic residents), and pre-intervention crime counts from 2015 to 2023. Based on these variables, the synthetic control algorithm identified the weighted combination of comparison neighborhoods that most closely mirrors actual Cully. The results provide a near-identical match between Cully and Synthetic Cully, as documented in @tbl-balance. 
+
+ While it is possible to incorporate additional covariates that might predict low-level crime, our current model already demonstrates a strong alignment between Synthetic Cully and actual Cully in terms of low-level crime rates prior to the intervention. Therefore, adding more covariates may not be necessary at this stage. -->
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_out <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grab_balance_table</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span> <span class="fu">round</span>(., <span class="dv">2</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flextable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-balance" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-balance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1
+</figcaption>
+<div aria-describedby="tbl-balance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-618dd546{}.cl-6180b8e8{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-61862fd0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-61862fda{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-61866446{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-61866450{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-61866451{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6186645a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6186645b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6186645c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-618dd546"><thead><tr style="overflow-wrap:break-word;"><th class="cl-61866446"><p class="cl-61862fd0"><span class="cl-6180b8e8">variable</span></p></th><th class="cl-61866450"><p class="cl-61862fda"><span class="cl-6180b8e8">Cully</span></p></th><th class="cl-61866450"><p class="cl-61862fda"><span class="cl-6180b8e8">synthetic_Cully</span></p></th><th class="cl-61866450"><p class="cl-61862fda"><span class="cl-6180b8e8">donor_sample</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">median_age_2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">37.94</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">37.66</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">40.23</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">no_ged_2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.11</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.11</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.05</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">pct_black_2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.14</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.13</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.07</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">pct_hispanic_2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.23</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.19</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.10</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">pct_white_2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.66</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.66</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.82</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">pop_2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">13,339.00</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">9,678.75</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">7,840.02</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">poverty_rate_2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.15</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.17</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.11</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">rentburd_pct_2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.48</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.58</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.47</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">turnout_2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.67</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.52</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">0.72</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">OffenseCount2015</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">432.00</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">442.89</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">293.01</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">OffenseCount2016</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">603.00</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">650.19</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">437.35</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">OffenseCount2017</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">755.00</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">736.46</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">473.02</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">OffenseCount2018</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">745.00</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">761.94</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">471.98</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">OffenseCount2019</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">740.00</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">738.79</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">469.11</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">OffenseCount2020</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">831.00</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">781.89</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">466.14</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">OffenseCount2021</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">856.00</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">876.55</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">528.76</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-61866451"><p class="cl-61862fd0"><span class="cl-6180b8e8">OffenseCount2022</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">924.00</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">889.62</span></p></td><td class="cl-6186645a"><p class="cl-61862fda"><span class="cl-6180b8e8">574.99</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-6186645b"><p class="cl-61862fd0"><span class="cl-6180b8e8">OffenseCount2023</span></p></td><td class="cl-6186645c"><p class="cl-61862fda"><span class="cl-6180b8e8">788.00</span></p></td><td class="cl-6186645c"><p class="cl-61862fda"><span class="cl-6180b8e8">806.14</span></p></td><td class="cl-6186645c"><p class="cl-61862fda"><span class="cl-6180b8e8">517.87</span></p></td></tr></tbody></table></div>
+<p>Cully vs.&nbsp;Synthetic Cully Balance Table</p>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</section>
+<section id="inference" class="level3">
+<h3 class="anchored" data-anchor-id="inference">Inference</h3>
+<p>Inference for the SC method follows the logic of permutation inference. The idea is to apply the SC method to every control unit in the sample and record the actual vs.&nbsp;synthetic gaps for each unit. We can then plot these gaps and visually assess whether the line associated synthetic Cully conspicuously differentiates itself from the rest, with small gaps prior to treatment and large gaps afterward.</p>
+<p>As shown in <a href="#fig-inference" class="quarto-xref">Figure&nbsp;3</a>, synthetic Cully does not stand out in this regard, lending credence to the conclusion that there is no statistically significant difference between Cully and Synthetic Cully.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># note: by default, plot_placebos prunes all placebos </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for which synthetic unit has poor pre-intervention fit</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df_out <span class="sc">%&gt;%</span> <span class="fu">plot_placebos</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-inference" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-inference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="RJC-Synthetic-Control-Evaluation_files/figure-html/fig-inference-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Synthetic vs.&nbsp;Actual Differences for each Neighborhood in the Sample
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>For exact inference, <a href="https://j-hai.github.io/assets/pdf/scm.pdf">Adabie et al.&nbsp;(2010)</a> propose a way of constructing Fisher’s Exact p-values by dividing the post-intervention MSPE by the pre-intervention MSPE and then ranking all the cases by this ratio in descending order. A p-value is then constructed by taking the rank/total relative to the placebo pool. Intuitively, the idea is that if the synthetic control fits the observed time series well (low MSPE in the pre-period) and diverges in the post-period (high MSPE in the post-period) then there is a meaningful effect due to the intervention. Conversely, if the intervention had no effect, then the post-period and pre-period should continue to map onto one another fairly well, yielding a ratio close to 1. If the placebo units fit the data similarly, then we can’t reject the null hypothesis that there is no effect brought about by the intervention.</p>
+<p>As shown in <a href="#tbl-inference" class="quarto-xref">Table&nbsp;2</a>, synthetic Cully ranks 52 out of 95 units in the sample, which corresponds to a p-value of .55.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df_out <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grab_significance</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Neighborhood =</span> unit_name) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span> <span class="fu">round</span>(., <span class="dv">2</span>))) <span class="sc">|&gt;</span> <span class="co"># round numeric vars to 2 digits</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">format =</span> <span class="st">"html"</span>, <span class="at">escape =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span>  <span class="co"># escape=FALSE allows HTML in cells</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"300px"</span>)  <span class="co"># Adds scroll if needed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="tbl-inference" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-inference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Fisher’s Exact P-Values
+</figcaption>
+<div aria-describedby="tbl-inference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped table-hover do-not-create-environment cell caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">Neighborhood</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">type</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">pre_mspe</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">post_mspe</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">mspe_ratio</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">rank</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">fishers_exact_pvalue</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">z_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Northwest</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">4291.24</td>
+<td style="text-align: right;">75681.79</td>
+<td style="text-align: right;">17.64</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">3.96</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hillsdale</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">49.67</td>
+<td style="text-align: right;">869.94</td>
+<td style="text-align: right;">17.51</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">3.92</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Arbor Lodge</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1740.48</td>
+<td style="text-align: right;">27390.32</td>
+<td style="text-align: right;">15.74</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">3.46</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">East Columbia</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">318.56</td>
+<td style="text-align: right;">4671.70</td>
+<td style="text-align: right;">14.67</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">3.17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">South Portland</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">788.58</td>
+<td style="text-align: right;">9699.80</td>
+<td style="text-align: right;">12.30</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">2.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hollywood</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">154.85</td>
+<td style="text-align: right;">1700.81</td>
+<td style="text-align: right;">10.98</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">2.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Multnomah</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">81.53</td>
+<td style="text-align: right;">813.32</td>
+<td style="text-align: right;">9.98</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1.93</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eliot</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">4380.54</td>
+<td style="text-align: right;">41138.65</td>
+<td style="text-align: right;">9.39</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">1.78</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Goose Hollow</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">559.54</td>
+<td style="text-align: right;">4853.64</td>
+<td style="text-align: right;">8.67</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">1.59</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sullivan's Gulch</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">202.86</td>
+<td style="text-align: right;">1600.04</td>
+<td style="text-align: right;">7.89</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">1.38</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Piedmont</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">182.77</td>
+<td style="text-align: right;">1316.25</td>
+<td style="text-align: right;">7.20</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">1.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Richmond</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">550.10</td>
+<td style="text-align: right;">3337.47</td>
+<td style="text-align: right;">6.07</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.90</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southwest Hills</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">44.95</td>
+<td style="text-align: right;">215.52</td>
+<td style="text-align: right;">4.79</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Concordia</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">328.52</td>
+<td style="text-align: right;">1561.84</td>
+<td style="text-align: right;">4.75</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.55</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Parkrose</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">984.41</td>
+<td style="text-align: right;">4140.62</td>
+<td style="text-align: right;">4.21</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.41</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hosford-Abernethy</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">532.91</td>
+<td style="text-align: right;">2032.79</td>
+<td style="text-align: right;">3.81</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brooklyn</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">129.54</td>
+<td style="text-align: right;">454.19</td>
+<td style="text-align: right;">3.51</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hayhurst</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">27.64</td>
+<td style="text-align: right;">93.56</td>
+<td style="text-align: right;">3.39</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lents</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">553.16</td>
+<td style="text-align: right;">1751.85</td>
+<td style="text-align: right;">3.17</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sunnyside</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">406.48</td>
+<td style="text-align: right;">1209.39</td>
+<td style="text-align: right;">2.98</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.08</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Collins View</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">103.16</td>
+<td style="text-align: right;">297.58</td>
+<td style="text-align: right;">2.88</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.06</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kenton</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">329.30</td>
+<td style="text-align: right;">927.45</td>
+<td style="text-align: right;">2.82</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.04</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Homestead</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">95.71</td>
+<td style="text-align: right;">246.32</td>
+<td style="text-align: right;">2.57</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">-0.02</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eastmoreland</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">43.99</td>
+<td style="text-align: right;">113.13</td>
+<td style="text-align: right;">2.57</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">-0.02</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Irvington</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">175.22</td>
+<td style="text-align: right;">443.64</td>
+<td style="text-align: right;">2.53</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">-0.03</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Northwest Industrial</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">29.84</td>
+<td style="text-align: right;">66.42</td>
+<td style="text-align: right;">2.23</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">-0.12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kerns</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1091.05</td>
+<td style="text-align: right;">2347.28</td>
+<td style="text-align: right;">2.15</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">-0.13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Linnton</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">102.71</td>
+<td style="text-align: right;">216.87</td>
+<td style="text-align: right;">2.11</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">-0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Humboldt</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">125.55</td>
+<td style="text-align: right;">255.92</td>
+<td style="text-align: right;">2.04</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">-0.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pearl</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">2810.34</td>
+<td style="text-align: right;">5586.06</td>
+<td style="text-align: right;">1.99</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">-0.18</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mt Tabor</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">169.01</td>
+<td style="text-align: right;">335.00</td>
+<td style="text-align: right;">1.98</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">-0.18</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Arlington Heights</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">251.72</td>
+<td style="text-align: right;">496.02</td>
+<td style="text-align: right;">1.97</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">-0.18</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cathedral Park</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">228.75</td>
+<td style="text-align: right;">441.52</td>
+<td style="text-align: right;">1.93</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">-0.19</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">University Park</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">574.87</td>
+<td style="text-align: right;">1104.43</td>
+<td style="text-align: right;">1.92</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0.36</td>
+<td style="text-align: right;">-0.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Maplewood</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">11.08</td>
+<td style="text-align: right;">20.93</td>
+<td style="text-align: right;">1.89</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">-0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sunderland</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">156.79</td>
+<td style="text-align: right;">284.24</td>
+<td style="text-align: right;">1.81</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">-0.22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">King</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">152.15</td>
+<td style="text-align: right;">270.75</td>
+<td style="text-align: right;">1.78</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">-0.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Healy Heights</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">5.30</td>
+<td style="text-align: right;">9.43</td>
+<td style="text-align: right;">1.78</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">-0.23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Beaumont-Wilshire</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">61.75</td>
+<td style="text-align: right;">101.31</td>
+<td style="text-align: right;">1.64</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">-0.27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Tabor</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">190.57</td>
+<td style="text-align: right;">311.52</td>
+<td style="text-align: right;">1.63</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">-0.27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Creston-Kenilworth</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">299.13</td>
+<td style="text-align: right;">464.94</td>
+<td style="text-align: right;">1.55</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: right;">-0.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Woodstock</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">169.15</td>
+<td style="text-align: right;">258.20</td>
+<td style="text-align: right;">1.53</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">-0.30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hayden Island</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">994.19</td>
+<td style="text-align: right;">1493.17</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">0.45</td>
+<td style="text-align: right;">-0.31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Arnold Creek</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">6.94</td>
+<td style="text-align: right;">9.73</td>
+<td style="text-align: right;">1.40</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">-0.33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Forest Park</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">90.26</td>
+<td style="text-align: right;">122.54</td>
+<td style="text-align: right;">1.36</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">-0.34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sellwood-Moreland</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">441.25</td>
+<td style="text-align: right;">591.45</td>
+<td style="text-align: right;">1.34</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">-0.35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Parkrose Heights</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">82.39</td>
+<td style="text-align: right;">105.29</td>
+<td style="text-align: right;">1.28</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">-0.37</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bridlemile</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">23.94</td>
+<td style="text-align: right;">30.27</td>
+<td style="text-align: right;">1.26</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">-0.37</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hillside</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">23.80</td>
+<td style="text-align: right;">29.64</td>
+<td style="text-align: right;">1.25</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">-0.37</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Centennial</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1293.32</td>
+<td style="text-align: right;">1512.33</td>
+<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">-0.39</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Madison South</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">254.05</td>
+<td style="text-align: right;">273.74</td>
+<td style="text-align: right;">1.08</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">-0.42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cully</td>
+<td style="text-align: left;">Treated</td>
+<td style="text-align: right;">253.11</td>
+<td style="text-align: right;">266.96</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">-0.42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Powellhurst-Gilbert</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1256.40</td>
+<td style="text-align: right;">1305.99</td>
+<td style="text-align: right;">1.04</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">0.56</td>
+<td style="text-align: right;">-0.43</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alameda</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">45.10</td>
+<td style="text-align: right;">46.71</td>
+<td style="text-align: right;">1.04</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">-0.43</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Foster-Powell</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">149.69</td>
+<td style="text-align: right;">145.91</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">-0.45</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pleasant Valley</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">255.58</td>
+<td style="text-align: right;">245.27</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">-0.45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Overlook</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">404.06</td>
+<td style="text-align: right;">386.52</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">-0.45</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Buckman West</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1499.11</td>
+<td style="text-align: right;">1393.89</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">0.61</td>
+<td style="text-align: right;">-0.46</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Laurelhurst</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">41.10</td>
+<td style="text-align: right;">37.71</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">0.62</td>
+<td style="text-align: right;">-0.46</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lloyd</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1471.89</td>
+<td style="text-align: right;">1342.24</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">-0.46</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mill Park</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">167.44</td>
+<td style="text-align: right;">151.77</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">0.64</td>
+<td style="text-align: right;">-0.46</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">St Johns</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">708.26</td>
+<td style="text-align: right;">634.25</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">-0.47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sumner</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">83.73</td>
+<td style="text-align: right;">73.75</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">-0.47</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Downtown</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">71427.81</td>
+<td style="text-align: right;">62401.80</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">-0.47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Woodlawn</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">89.46</td>
+<td style="text-align: right;">72.77</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">-0.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Russell</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">93.16</td>
+<td style="text-align: right;">75.27</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">-0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sabin</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">41.69</td>
+<td style="text-align: right;">33.55</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">-0.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ashcreek</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">27.33</td>
+<td style="text-align: right;">21.51</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">-0.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Far Southwest</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">18.02</td>
+<td style="text-align: right;">14.15</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: right;">-0.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Northwest Heights</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">12.46</td>
+<td style="text-align: right;">9.56</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">-0.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vernon</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">58.67</td>
+<td style="text-align: right;">43.74</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">-0.51</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Montavilla</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">541.43</td>
+<td style="text-align: right;">346.68</td>
+<td style="text-align: right;">0.64</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">-0.53</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Boise</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">248.29</td>
+<td style="text-align: right;">156.03</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: right;">-0.54</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Grant Park</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">73.15</td>
+<td style="text-align: right;">42.50</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: right;">-0.55</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Crestwood</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">13.44</td>
+<td style="text-align: right;">7.58</td>
+<td style="text-align: right;">0.56</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">-0.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Markham</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">19.86</td>
+<td style="text-align: right;">10.80</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">-0.56</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ardenwald</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">21.73</td>
+<td style="text-align: right;">10.76</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">-0.57</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Woodland Park</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">45.39</td>
+<td style="text-align: right;">22.39</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">-0.57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">South Tabor</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">207.70</td>
+<td style="text-align: right;">100.23</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">-0.58</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">West Portland Park</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">52.60</td>
+<td style="text-align: right;">24.78</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">-0.58</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bridgeton</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">67.50</td>
+<td style="text-align: right;">31.79</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">-0.58</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rose City Park</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">187.52</td>
+<td style="text-align: right;">83.42</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">-0.59</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reed</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">71.27</td>
+<td style="text-align: right;">29.52</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">-0.59</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Glenfair</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">373.54</td>
+<td style="text-align: right;">154.64</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">-0.59</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mt Scott-Arleta</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">223.03</td>
+<td style="text-align: right;">90.46</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">-0.60</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Marshall Park</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">6.72</td>
+<td style="text-align: right;">2.47</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">-0.61</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">South Burlingame</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">17.78</td>
+<td style="text-align: right;">5.94</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">-0.61</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Portsmouth</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">525.23</td>
+<td style="text-align: right;">166.78</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">-0.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Roseway</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">123.63</td>
+<td style="text-align: right;">37.99</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">-0.62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hazelwood</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">14272.79</td>
+<td style="text-align: right;">3106.94</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">-0.65</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Old Town/Chinatown</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">2218.84</td>
+<td style="text-align: right;">470.95</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">-0.65</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wilkes</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">389.88</td>
+<td style="text-align: right;">69.79</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">-0.66</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sylvan-Highlands</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">57.46</td>
+<td style="text-align: right;">9.70</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">-0.66</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Brentwood-Darlington</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">242.19</td>
+<td style="text-align: right;">36.18</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">94</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">-0.66</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Argay</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">380.89</td>
+<td style="text-align: right;">23.22</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">-0.69</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</div>
+</figure>
+</div>
+</div>
+<!---
+
+::: {.scrolling-output}
+
+
+::: {.cell}
+
+```{.r .cell-code  code-fold="true"}
+df_out |> 
+  grab_significance() |>
+  mutate(across(where(is.numeric), ~ round(., 2))) |> # round numeric vars to 2 digits
+  gt()
+```
+
+::: {.cell-output-display}
+
+```{=html}
+<div id="jkgejgbgjw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jkgejgbgjw table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#jkgejgbgjw thead, #jkgejgbgjw tbody, #jkgejgbgjw tfoot, #jkgejgbgjw tr, #jkgejgbgjw td, #jkgejgbgjw th {
+  border-style: none;
+}
+
+#jkgejgbgjw p {
+  margin: 0;
+  padding: 0;
+}
+
+#jkgejgbgjw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#jkgejgbgjw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#jkgejgbgjw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#jkgejgbgjw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#jkgejgbgjw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#jkgejgbgjw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#jkgejgbgjw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#jkgejgbgjw .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#jkgejgbgjw .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#jkgejgbgjw .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#jkgejgbgjw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#jkgejgbgjw .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#jkgejgbgjw .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#jkgejgbgjw .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#jkgejgbgjw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jkgejgbgjw .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#jkgejgbgjw .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#jkgejgbgjw .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#jkgejgbgjw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jkgejgbgjw .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#jkgejgbgjw .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jkgejgbgjw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#jkgejgbgjw .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jkgejgbgjw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jkgejgbgjw .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jkgejgbgjw .gt_left {
+  text-align: left;
+}
+
+#jkgejgbgjw .gt_center {
+  text-align: center;
+}
+
+#jkgejgbgjw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#jkgejgbgjw .gt_font_normal {
+  font-weight: normal;
+}
+
+#jkgejgbgjw .gt_font_bold {
+  font-weight: bold;
+}
+
+#jkgejgbgjw .gt_font_italic {
+  font-style: italic;
+}
+
+#jkgejgbgjw .gt_super {
+  font-size: 65%;
+}
+
+#jkgejgbgjw .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#jkgejgbgjw .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#jkgejgbgjw .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#jkgejgbgjw .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#jkgejgbgjw .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#jkgejgbgjw .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#jkgejgbgjw .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#jkgejgbgjw .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#jkgejgbgjw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="unit_name" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">unit_name</th>
+<th id="type" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">type</th>
+<th id="pre_mspe" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">pre_mspe</th>
+<th id="post_mspe" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">post_mspe</th>
+<th id="mspe_ratio" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">mspe_ratio</th>
+<th id="rank" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">rank</th>
+<th id="fishers_exact_pvalue" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">fishers_exact_pvalue</th>
+<th id="z_score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">z_score</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Northwest</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">4291.24</td>
+<td class="gt_row gt_right" headers="post_mspe">75681.79</td>
+<td class="gt_row gt_right" headers="mspe_ratio">17.64</td>
+<td class="gt_row gt_right" headers="rank">1</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.01</td>
+<td class="gt_row gt_right" headers="z_score">3.96</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Hillsdale</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">49.67</td>
+<td class="gt_row gt_right" headers="post_mspe">869.94</td>
+<td class="gt_row gt_right" headers="mspe_ratio">17.51</td>
+<td class="gt_row gt_right" headers="rank">2</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.02</td>
+<td class="gt_row gt_right" headers="z_score">3.92</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Arbor Lodge</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">1740.48</td>
+<td class="gt_row gt_right" headers="post_mspe">27390.32</td>
+<td class="gt_row gt_right" headers="mspe_ratio">15.74</td>
+<td class="gt_row gt_right" headers="rank">3</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.03</td>
+<td class="gt_row gt_right" headers="z_score">3.46</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">East Columbia</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">318.56</td>
+<td class="gt_row gt_right" headers="post_mspe">4671.70</td>
+<td class="gt_row gt_right" headers="mspe_ratio">14.67</td>
+<td class="gt_row gt_right" headers="rank">4</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.04</td>
+<td class="gt_row gt_right" headers="z_score">3.17</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">South Portland</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">788.58</td>
+<td class="gt_row gt_right" headers="post_mspe">9699.80</td>
+<td class="gt_row gt_right" headers="mspe_ratio">12.30</td>
+<td class="gt_row gt_right" headers="rank">5</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.05</td>
+<td class="gt_row gt_right" headers="z_score">2.55</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Hollywood</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">154.85</td>
+<td class="gt_row gt_right" headers="post_mspe">1700.81</td>
+<td class="gt_row gt_right" headers="mspe_ratio">10.98</td>
+<td class="gt_row gt_right" headers="rank">6</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.06</td>
+<td class="gt_row gt_right" headers="z_score">2.20</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Multnomah</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">81.53</td>
+<td class="gt_row gt_right" headers="post_mspe">813.32</td>
+<td class="gt_row gt_right" headers="mspe_ratio">9.98</td>
+<td class="gt_row gt_right" headers="rank">7</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.07</td>
+<td class="gt_row gt_right" headers="z_score">1.93</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Eliot</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">4380.54</td>
+<td class="gt_row gt_right" headers="post_mspe">41138.65</td>
+<td class="gt_row gt_right" headers="mspe_ratio">9.39</td>
+<td class="gt_row gt_right" headers="rank">8</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.08</td>
+<td class="gt_row gt_right" headers="z_score">1.78</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Goose Hollow</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">559.54</td>
+<td class="gt_row gt_right" headers="post_mspe">4853.64</td>
+<td class="gt_row gt_right" headers="mspe_ratio">8.67</td>
+<td class="gt_row gt_right" headers="rank">9</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.09</td>
+<td class="gt_row gt_right" headers="z_score">1.59</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Sullivan's Gulch</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">202.86</td>
+<td class="gt_row gt_right" headers="post_mspe">1600.04</td>
+<td class="gt_row gt_right" headers="mspe_ratio">7.89</td>
+<td class="gt_row gt_right" headers="rank">10</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.11</td>
+<td class="gt_row gt_right" headers="z_score">1.38</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Piedmont</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">182.77</td>
+<td class="gt_row gt_right" headers="post_mspe">1316.25</td>
+<td class="gt_row gt_right" headers="mspe_ratio">7.20</td>
+<td class="gt_row gt_right" headers="rank">11</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.12</td>
+<td class="gt_row gt_right" headers="z_score">1.20</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Richmond</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">550.10</td>
+<td class="gt_row gt_right" headers="post_mspe">3337.47</td>
+<td class="gt_row gt_right" headers="mspe_ratio">6.07</td>
+<td class="gt_row gt_right" headers="rank">12</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.13</td>
+<td class="gt_row gt_right" headers="z_score">0.90</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Southwest Hills</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">44.95</td>
+<td class="gt_row gt_right" headers="post_mspe">215.52</td>
+<td class="gt_row gt_right" headers="mspe_ratio">4.79</td>
+<td class="gt_row gt_right" headers="rank">13</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.14</td>
+<td class="gt_row gt_right" headers="z_score">0.56</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Concordia</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">328.52</td>
+<td class="gt_row gt_right" headers="post_mspe">1561.84</td>
+<td class="gt_row gt_right" headers="mspe_ratio">4.75</td>
+<td class="gt_row gt_right" headers="rank">14</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.15</td>
+<td class="gt_row gt_right" headers="z_score">0.55</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Parkrose</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">984.41</td>
+<td class="gt_row gt_right" headers="post_mspe">4140.62</td>
+<td class="gt_row gt_right" headers="mspe_ratio">4.21</td>
+<td class="gt_row gt_right" headers="rank">15</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.16</td>
+<td class="gt_row gt_right" headers="z_score">0.41</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Hosford-Abernethy</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">532.91</td>
+<td class="gt_row gt_right" headers="post_mspe">2032.79</td>
+<td class="gt_row gt_right" headers="mspe_ratio">3.81</td>
+<td class="gt_row gt_right" headers="rank">16</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.17</td>
+<td class="gt_row gt_right" headers="z_score">0.30</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Brooklyn</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">129.54</td>
+<td class="gt_row gt_right" headers="post_mspe">454.19</td>
+<td class="gt_row gt_right" headers="mspe_ratio">3.51</td>
+<td class="gt_row gt_right" headers="rank">17</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.18</td>
+<td class="gt_row gt_right" headers="z_score">0.22</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Hayhurst</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">27.64</td>
+<td class="gt_row gt_right" headers="post_mspe">93.56</td>
+<td class="gt_row gt_right" headers="mspe_ratio">3.39</td>
+<td class="gt_row gt_right" headers="rank">18</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.19</td>
+<td class="gt_row gt_right" headers="z_score">0.19</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Lents</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">553.16</td>
+<td class="gt_row gt_right" headers="post_mspe">1751.85</td>
+<td class="gt_row gt_right" headers="mspe_ratio">3.17</td>
+<td class="gt_row gt_right" headers="rank">19</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.20</td>
+<td class="gt_row gt_right" headers="z_score">0.13</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Sunnyside</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">406.48</td>
+<td class="gt_row gt_right" headers="post_mspe">1209.39</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.98</td>
+<td class="gt_row gt_right" headers="rank">20</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.21</td>
+<td class="gt_row gt_right" headers="z_score">0.08</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Collins View</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">103.16</td>
+<td class="gt_row gt_right" headers="post_mspe">297.58</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.88</td>
+<td class="gt_row gt_right" headers="rank">21</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.22</td>
+<td class="gt_row gt_right" headers="z_score">0.06</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Kenton</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">329.30</td>
+<td class="gt_row gt_right" headers="post_mspe">927.45</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.82</td>
+<td class="gt_row gt_right" headers="rank">22</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.23</td>
+<td class="gt_row gt_right" headers="z_score">0.04</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Homestead</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">95.71</td>
+<td class="gt_row gt_right" headers="post_mspe">246.32</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.57</td>
+<td class="gt_row gt_right" headers="rank">23</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.24</td>
+<td class="gt_row gt_right" headers="z_score">-0.02</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Eastmoreland</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">43.99</td>
+<td class="gt_row gt_right" headers="post_mspe">113.13</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.57</td>
+<td class="gt_row gt_right" headers="rank">24</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.25</td>
+<td class="gt_row gt_right" headers="z_score">-0.02</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Irvington</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">175.22</td>
+<td class="gt_row gt_right" headers="post_mspe">443.64</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.53</td>
+<td class="gt_row gt_right" headers="rank">25</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.26</td>
+<td class="gt_row gt_right" headers="z_score">-0.03</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Northwest Industrial</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">29.84</td>
+<td class="gt_row gt_right" headers="post_mspe">66.42</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.23</td>
+<td class="gt_row gt_right" headers="rank">26</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.27</td>
+<td class="gt_row gt_right" headers="z_score">-0.12</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Kerns</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">1091.05</td>
+<td class="gt_row gt_right" headers="post_mspe">2347.28</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.15</td>
+<td class="gt_row gt_right" headers="rank">27</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.28</td>
+<td class="gt_row gt_right" headers="z_score">-0.13</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Linnton</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">102.71</td>
+<td class="gt_row gt_right" headers="post_mspe">216.87</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.11</td>
+<td class="gt_row gt_right" headers="rank">28</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.29</td>
+<td class="gt_row gt_right" headers="z_score">-0.15</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Humboldt</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">125.55</td>
+<td class="gt_row gt_right" headers="post_mspe">255.92</td>
+<td class="gt_row gt_right" headers="mspe_ratio">2.04</td>
+<td class="gt_row gt_right" headers="rank">29</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.31</td>
+<td class="gt_row gt_right" headers="z_score">-0.16</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Pearl</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">2810.34</td>
+<td class="gt_row gt_right" headers="post_mspe">5586.06</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.99</td>
+<td class="gt_row gt_right" headers="rank">30</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.32</td>
+<td class="gt_row gt_right" headers="z_score">-0.18</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Mt Tabor</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">169.01</td>
+<td class="gt_row gt_right" headers="post_mspe">335.00</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.98</td>
+<td class="gt_row gt_right" headers="rank">31</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.33</td>
+<td class="gt_row gt_right" headers="z_score">-0.18</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Arlington Heights</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">251.72</td>
+<td class="gt_row gt_right" headers="post_mspe">496.02</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.97</td>
+<td class="gt_row gt_right" headers="rank">32</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.34</td>
+<td class="gt_row gt_right" headers="z_score">-0.18</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Cathedral Park</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">228.75</td>
+<td class="gt_row gt_right" headers="post_mspe">441.52</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.93</td>
+<td class="gt_row gt_right" headers="rank">33</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.35</td>
+<td class="gt_row gt_right" headers="z_score">-0.19</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">University Park</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">574.87</td>
+<td class="gt_row gt_right" headers="post_mspe">1104.43</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.92</td>
+<td class="gt_row gt_right" headers="rank">34</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.36</td>
+<td class="gt_row gt_right" headers="z_score">-0.20</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Maplewood</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">11.08</td>
+<td class="gt_row gt_right" headers="post_mspe">20.93</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.89</td>
+<td class="gt_row gt_right" headers="rank">35</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.37</td>
+<td class="gt_row gt_right" headers="z_score">-0.20</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Sunderland</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">156.79</td>
+<td class="gt_row gt_right" headers="post_mspe">284.24</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.81</td>
+<td class="gt_row gt_right" headers="rank">36</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.38</td>
+<td class="gt_row gt_right" headers="z_score">-0.22</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">King</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">152.15</td>
+<td class="gt_row gt_right" headers="post_mspe">270.75</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.78</td>
+<td class="gt_row gt_right" headers="rank">37</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.39</td>
+<td class="gt_row gt_right" headers="z_score">-0.23</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Healy Heights</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">5.30</td>
+<td class="gt_row gt_right" headers="post_mspe">9.43</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.78</td>
+<td class="gt_row gt_right" headers="rank">38</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.40</td>
+<td class="gt_row gt_right" headers="z_score">-0.23</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Beaumont-Wilshire</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">61.75</td>
+<td class="gt_row gt_right" headers="post_mspe">101.31</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.64</td>
+<td class="gt_row gt_right" headers="rank">39</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.41</td>
+<td class="gt_row gt_right" headers="z_score">-0.27</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">North Tabor</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">190.57</td>
+<td class="gt_row gt_right" headers="post_mspe">311.52</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.63</td>
+<td class="gt_row gt_right" headers="rank">40</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.42</td>
+<td class="gt_row gt_right" headers="z_score">-0.27</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Creston-Kenilworth</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">299.13</td>
+<td class="gt_row gt_right" headers="post_mspe">464.94</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.55</td>
+<td class="gt_row gt_right" headers="rank">41</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.43</td>
+<td class="gt_row gt_right" headers="z_score">-0.29</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Woodstock</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">169.15</td>
+<td class="gt_row gt_right" headers="post_mspe">258.20</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.53</td>
+<td class="gt_row gt_right" headers="rank">42</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.44</td>
+<td class="gt_row gt_right" headers="z_score">-0.30</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Hayden Island</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">994.19</td>
+<td class="gt_row gt_right" headers="post_mspe">1493.17</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.50</td>
+<td class="gt_row gt_right" headers="rank">43</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.45</td>
+<td class="gt_row gt_right" headers="z_score">-0.31</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Arnold Creek</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">6.94</td>
+<td class="gt_row gt_right" headers="post_mspe">9.73</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.40</td>
+<td class="gt_row gt_right" headers="rank">44</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.46</td>
+<td class="gt_row gt_right" headers="z_score">-0.33</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Forest Park</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">90.26</td>
+<td class="gt_row gt_right" headers="post_mspe">122.54</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.36</td>
+<td class="gt_row gt_right" headers="rank">45</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.47</td>
+<td class="gt_row gt_right" headers="z_score">-0.34</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Sellwood-Moreland</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">441.25</td>
+<td class="gt_row gt_right" headers="post_mspe">591.45</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.34</td>
+<td class="gt_row gt_right" headers="rank">46</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.48</td>
+<td class="gt_row gt_right" headers="z_score">-0.35</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Parkrose Heights</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">82.39</td>
+<td class="gt_row gt_right" headers="post_mspe">105.29</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.28</td>
+<td class="gt_row gt_right" headers="rank">47</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.49</td>
+<td class="gt_row gt_right" headers="z_score">-0.37</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Bridlemile</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">23.94</td>
+<td class="gt_row gt_right" headers="post_mspe">30.27</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.26</td>
+<td class="gt_row gt_right" headers="rank">48</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.51</td>
+<td class="gt_row gt_right" headers="z_score">-0.37</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Hillside</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">23.80</td>
+<td class="gt_row gt_right" headers="post_mspe">29.64</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.25</td>
+<td class="gt_row gt_right" headers="rank">49</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.52</td>
+<td class="gt_row gt_right" headers="z_score">-0.37</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Centennial</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">1293.32</td>
+<td class="gt_row gt_right" headers="post_mspe">1512.33</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.17</td>
+<td class="gt_row gt_right" headers="rank">50</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.53</td>
+<td class="gt_row gt_right" headers="z_score">-0.39</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Madison South</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">254.05</td>
+<td class="gt_row gt_right" headers="post_mspe">273.74</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.08</td>
+<td class="gt_row gt_right" headers="rank">51</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.54</td>
+<td class="gt_row gt_right" headers="z_score">-0.42</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Cully</td>
+<td class="gt_row gt_left" headers="type">Treated</td>
+<td class="gt_row gt_right" headers="pre_mspe">253.11</td>
+<td class="gt_row gt_right" headers="post_mspe">266.96</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.05</td>
+<td class="gt_row gt_right" headers="rank">52</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.55</td>
+<td class="gt_row gt_right" headers="z_score">-0.42</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Powellhurst-Gilbert</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">1256.40</td>
+<td class="gt_row gt_right" headers="post_mspe">1305.99</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.04</td>
+<td class="gt_row gt_right" headers="rank">53</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.56</td>
+<td class="gt_row gt_right" headers="z_score">-0.43</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Alameda</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">45.10</td>
+<td class="gt_row gt_right" headers="post_mspe">46.71</td>
+<td class="gt_row gt_right" headers="mspe_ratio">1.04</td>
+<td class="gt_row gt_right" headers="rank">54</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.57</td>
+<td class="gt_row gt_right" headers="z_score">-0.43</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Foster-Powell</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">149.69</td>
+<td class="gt_row gt_right" headers="post_mspe">145.91</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.97</td>
+<td class="gt_row gt_right" headers="rank">55</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.58</td>
+<td class="gt_row gt_right" headers="z_score">-0.45</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Pleasant Valley</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">255.58</td>
+<td class="gt_row gt_right" headers="post_mspe">245.27</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.96</td>
+<td class="gt_row gt_right" headers="rank">56</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.59</td>
+<td class="gt_row gt_right" headers="z_score">-0.45</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Overlook</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">404.06</td>
+<td class="gt_row gt_right" headers="post_mspe">386.52</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.96</td>
+<td class="gt_row gt_right" headers="rank">57</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.60</td>
+<td class="gt_row gt_right" headers="z_score">-0.45</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Buckman West</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">1499.11</td>
+<td class="gt_row gt_right" headers="post_mspe">1393.89</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.93</td>
+<td class="gt_row gt_right" headers="rank">58</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.61</td>
+<td class="gt_row gt_right" headers="z_score">-0.46</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Laurelhurst</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">41.10</td>
+<td class="gt_row gt_right" headers="post_mspe">37.71</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.92</td>
+<td class="gt_row gt_right" headers="rank">59</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.62</td>
+<td class="gt_row gt_right" headers="z_score">-0.46</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Lloyd</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">1471.89</td>
+<td class="gt_row gt_right" headers="post_mspe">1342.24</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.91</td>
+<td class="gt_row gt_right" headers="rank">60</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.63</td>
+<td class="gt_row gt_right" headers="z_score">-0.46</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Mill Park</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">167.44</td>
+<td class="gt_row gt_right" headers="post_mspe">151.77</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.91</td>
+<td class="gt_row gt_right" headers="rank">61</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.64</td>
+<td class="gt_row gt_right" headers="z_score">-0.46</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">St Johns</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">708.26</td>
+<td class="gt_row gt_right" headers="post_mspe">634.25</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.90</td>
+<td class="gt_row gt_right" headers="rank">62</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.65</td>
+<td class="gt_row gt_right" headers="z_score">-0.47</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Sumner</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">83.73</td>
+<td class="gt_row gt_right" headers="post_mspe">73.75</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.88</td>
+<td class="gt_row gt_right" headers="rank">63</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.66</td>
+<td class="gt_row gt_right" headers="z_score">-0.47</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Downtown</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">71427.81</td>
+<td class="gt_row gt_right" headers="post_mspe">62401.80</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.87</td>
+<td class="gt_row gt_right" headers="rank">64</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.67</td>
+<td class="gt_row gt_right" headers="z_score">-0.47</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Woodlawn</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">89.46</td>
+<td class="gt_row gt_right" headers="post_mspe">72.77</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.81</td>
+<td class="gt_row gt_right" headers="rank">65</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.68</td>
+<td class="gt_row gt_right" headers="z_score">-0.49</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Russell</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">93.16</td>
+<td class="gt_row gt_right" headers="post_mspe">75.27</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.81</td>
+<td class="gt_row gt_right" headers="rank">66</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.69</td>
+<td class="gt_row gt_right" headers="z_score">-0.49</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Sabin</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">41.69</td>
+<td class="gt_row gt_right" headers="post_mspe">33.55</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.80</td>
+<td class="gt_row gt_right" headers="rank">67</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.71</td>
+<td class="gt_row gt_right" headers="z_score">-0.49</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Ashcreek</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">27.33</td>
+<td class="gt_row gt_right" headers="post_mspe">21.51</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.79</td>
+<td class="gt_row gt_right" headers="rank">68</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.72</td>
+<td class="gt_row gt_right" headers="z_score">-0.50</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Far Southwest</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">18.02</td>
+<td class="gt_row gt_right" headers="post_mspe">14.15</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.78</td>
+<td class="gt_row gt_right" headers="rank">69</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.73</td>
+<td class="gt_row gt_right" headers="z_score">-0.50</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Northwest Heights</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">12.46</td>
+<td class="gt_row gt_right" headers="post_mspe">9.56</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.77</td>
+<td class="gt_row gt_right" headers="rank">70</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.74</td>
+<td class="gt_row gt_right" headers="z_score">-0.50</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Vernon</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">58.67</td>
+<td class="gt_row gt_right" headers="post_mspe">43.74</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.75</td>
+<td class="gt_row gt_right" headers="rank">71</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.75</td>
+<td class="gt_row gt_right" headers="z_score">-0.51</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Montavilla</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">541.43</td>
+<td class="gt_row gt_right" headers="post_mspe">346.68</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.64</td>
+<td class="gt_row gt_right" headers="rank">72</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.76</td>
+<td class="gt_row gt_right" headers="z_score">-0.53</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Boise</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">248.29</td>
+<td class="gt_row gt_right" headers="post_mspe">156.03</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.63</td>
+<td class="gt_row gt_right" headers="rank">73</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.77</td>
+<td class="gt_row gt_right" headers="z_score">-0.54</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Grant Park</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">73.15</td>
+<td class="gt_row gt_right" headers="post_mspe">42.50</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.58</td>
+<td class="gt_row gt_right" headers="rank">74</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.78</td>
+<td class="gt_row gt_right" headers="z_score">-0.55</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Crestwood</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">13.44</td>
+<td class="gt_row gt_right" headers="post_mspe">7.58</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.56</td>
+<td class="gt_row gt_right" headers="rank">75</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.79</td>
+<td class="gt_row gt_right" headers="z_score">-0.55</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Markham</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">19.86</td>
+<td class="gt_row gt_right" headers="post_mspe">10.80</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.54</td>
+<td class="gt_row gt_right" headers="rank">76</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.80</td>
+<td class="gt_row gt_right" headers="z_score">-0.56</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Ardenwald</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">21.73</td>
+<td class="gt_row gt_right" headers="post_mspe">10.76</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.50</td>
+<td class="gt_row gt_right" headers="rank">77</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.81</td>
+<td class="gt_row gt_right" headers="z_score">-0.57</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Woodland Park</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">45.39</td>
+<td class="gt_row gt_right" headers="post_mspe">22.39</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.49</td>
+<td class="gt_row gt_right" headers="rank">78</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.82</td>
+<td class="gt_row gt_right" headers="z_score">-0.57</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">South Tabor</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">207.70</td>
+<td class="gt_row gt_right" headers="post_mspe">100.23</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.48</td>
+<td class="gt_row gt_right" headers="rank">79</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.83</td>
+<td class="gt_row gt_right" headers="z_score">-0.58</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">West Portland Park</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">52.60</td>
+<td class="gt_row gt_right" headers="post_mspe">24.78</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.47</td>
+<td class="gt_row gt_right" headers="rank">80</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.84</td>
+<td class="gt_row gt_right" headers="z_score">-0.58</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Bridgeton</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">67.50</td>
+<td class="gt_row gt_right" headers="post_mspe">31.79</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.47</td>
+<td class="gt_row gt_right" headers="rank">81</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.85</td>
+<td class="gt_row gt_right" headers="z_score">-0.58</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Rose City Park</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">187.52</td>
+<td class="gt_row gt_right" headers="post_mspe">83.42</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.44</td>
+<td class="gt_row gt_right" headers="rank">82</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.86</td>
+<td class="gt_row gt_right" headers="z_score">-0.59</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Reed</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">71.27</td>
+<td class="gt_row gt_right" headers="post_mspe">29.52</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.41</td>
+<td class="gt_row gt_right" headers="rank">83</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.87</td>
+<td class="gt_row gt_right" headers="z_score">-0.59</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Glenfair</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">373.54</td>
+<td class="gt_row gt_right" headers="post_mspe">154.64</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.41</td>
+<td class="gt_row gt_right" headers="rank">84</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.88</td>
+<td class="gt_row gt_right" headers="z_score">-0.59</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Mt Scott-Arleta</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">223.03</td>
+<td class="gt_row gt_right" headers="post_mspe">90.46</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.41</td>
+<td class="gt_row gt_right" headers="rank">85</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.89</td>
+<td class="gt_row gt_right" headers="z_score">-0.60</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Marshall Park</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">6.72</td>
+<td class="gt_row gt_right" headers="post_mspe">2.47</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.37</td>
+<td class="gt_row gt_right" headers="rank">86</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.91</td>
+<td class="gt_row gt_right" headers="z_score">-0.61</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">South Burlingame</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">17.78</td>
+<td class="gt_row gt_right" headers="post_mspe">5.94</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.33</td>
+<td class="gt_row gt_right" headers="rank">87</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.92</td>
+<td class="gt_row gt_right" headers="z_score">-0.61</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Portsmouth</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">525.23</td>
+<td class="gt_row gt_right" headers="post_mspe">166.78</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.32</td>
+<td class="gt_row gt_right" headers="rank">88</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.93</td>
+<td class="gt_row gt_right" headers="z_score">-0.62</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Roseway</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">123.63</td>
+<td class="gt_row gt_right" headers="post_mspe">37.99</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.31</td>
+<td class="gt_row gt_right" headers="rank">89</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.94</td>
+<td class="gt_row gt_right" headers="z_score">-0.62</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Hazelwood</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">14272.79</td>
+<td class="gt_row gt_right" headers="post_mspe">3106.94</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.22</td>
+<td class="gt_row gt_right" headers="rank">90</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.95</td>
+<td class="gt_row gt_right" headers="z_score">-0.65</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Old Town/Chinatown</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">2218.84</td>
+<td class="gt_row gt_right" headers="post_mspe">470.95</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.21</td>
+<td class="gt_row gt_right" headers="rank">91</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.96</td>
+<td class="gt_row gt_right" headers="z_score">-0.65</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Wilkes</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">389.88</td>
+<td class="gt_row gt_right" headers="post_mspe">69.79</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.18</td>
+<td class="gt_row gt_right" headers="rank">92</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.97</td>
+<td class="gt_row gt_right" headers="z_score">-0.66</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Sylvan-Highlands</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">57.46</td>
+<td class="gt_row gt_right" headers="post_mspe">9.70</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.17</td>
+<td class="gt_row gt_right" headers="rank">93</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.98</td>
+<td class="gt_row gt_right" headers="z_score">-0.66</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="unit_name">Brentwood-Darlington</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">242.19</td>
+<td class="gt_row gt_right" headers="post_mspe">36.18</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.15</td>
+<td class="gt_row gt_right" headers="rank">94</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">0.99</td>
+<td class="gt_row gt_right" headers="z_score">-0.66</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="unit_name">Argay</td>
+<td class="gt_row gt_left" headers="type">Donor</td>
+<td class="gt_row gt_right" headers="pre_mspe">380.89</td>
+<td class="gt_row gt_right" headers="post_mspe">23.22</td>
+<td class="gt_row gt_right" headers="mspe_ratio">0.06</td>
+<td class="gt_row gt_right" headers="rank">95</td>
+<td class="gt_row gt_right" headers="fishers_exact_pvalue">1.00</td>
+<td class="gt_row gt_right" headers="z_score">-0.69</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+```
+
+:::
+:::
+
+
+:::
+
+-->
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>For background on the synthetic control method, see: <a href="https://www.aeaweb.org/articles?id=10.1257/jel.20191450">Abadie, Alberto. “Using synthetic controls: Feasibility, Data Requirements, and Methodological Aspects.” Journal of Economic Literature 59.2 (2021): 391-425.</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Although pre-intevention trends between Cully and synthetic Cully map closely onto one another, the fit is not perfect. In a more extended implementation, we might consider using the <a href="https://sdfordham.github.io/pysyncon/augsynth.html">Augmented Syntheticl Control</a> method to further minimize pre-intervention imbalance between synthetic Cully and Cully. Analogous to bias correction for inexact matching, the Augmented SC method uses an outcome model to estimate bias due to imperfect pretreatment fit and then de-biases the original SCM estimate. For background on the augmented synthetic control method, see: <a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2021.1929245">Ben-Michael, Eli, Avi Feller, and Jesse Rothstein. “The augmented synthetic control method.” Journal of the American Statistical Association 116.536 (2021): 1789-1803.</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Inference for the SC method is akin to a permutation test in which the effect estimate for the treated unit is compared to the distribution of effects for control units. As seen in <a href="#tbl-inference" class="quarto-xref">Table&nbsp;2</a>, Synthetic Cully MSPE ratio ranks 52 out of the 95 units in the sample, corresponding to a Fisher’s exact p-value of .55. For full details, see the Inference section below.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>In addition to pre-intervention crime counts for each quarter from 2015 to 2023, I include population, percentage of residents below the poverty line, percentage without a GED, electoral turnout, and racial composition measures in the model.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
